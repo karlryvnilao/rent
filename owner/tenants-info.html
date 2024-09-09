@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/apartment.css">
+</head>
+<body>
+    <div class="container d-flex flex-column align-items-center vh-100 justify-content-between py-4">
+        <!-- Avatar Section -->
+        <div class="avatar-section">
+            <img src="avatar.png" alt="User Avatar" id="user-avatar" class="rounded-circle border border-secondary">
+        </div>
+
+        <!-- Information Section -->
+        <div class="info-section text-center">
+            <h2 class="mt-3">User Information</h2>
+            <p><strong>Name:</strong> John Doe</p>
+            <p><strong>Email:</strong> johndoe@example.com</p>
+            <p><strong>Phone:</strong> +1234567890</p>
+            <!-- Add more information fields as needed -->
+        </div>
+
+        <!-- Back Button Section -->
+        <div class="back-section">
+            <button id="back-btn" class="btn btn-primary">Back</button>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="../profile-scripts.js"></script>
+</body>
+</html>
