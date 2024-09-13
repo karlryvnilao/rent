@@ -9,26 +9,39 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'tenant') {
 }
 
 $tenant_id = $_SESSION['user_id'];
+echo 'Tenant ID: ' . htmlspecialchars($tenant_id); // Debug output
 
-// Fetch payment details and associated property information
-$stmt = $conn->prepare("
-    SELECT p.amount, p.payment_date, p.due_date, p.status, pr.location, pr.type 
-    FROM payments p
-    JOIN rentals r ON p.tenant_id = r.tenant_id
-    JOIN properties pr ON r.property_id = pr.id
-    WHERE p.tenant_id = ?
-");
-$stmt->bind_param("i", $tenant_id);
-$stmt->execute();
-$result = $stmt->get_result();
-$payments = $result->fetch_all(MYSQLI_ASSOC);
+try {
+    // Fetch payment details and associated property information for the logged-in tenant
+    $stmt = $conn->prepare("
+        SELECT p.amount, p.payment_date, p.status, pr.type 
+        FROM payments p
+        JOIN rentals r ON p.tenant_id = r.tenant_id
+        JOIN properties pr ON r.property_id = pr.id
+        WHERE p.tenant_id = ?
+    ");
+    $stmt->bind_param("i", $tenant_id);
 
-$stmt->close();
+    if ($stmt->execute()) {
+        $result = $stmt->get_result();
+        $payments = $result->fetch_all(MYSQLI_ASSOC);
+    } else {
+        echo 'Error executing query: ' . $stmt->error;
+        $payments = [];
+    }
+
+    $stmt->close();
+} catch (Exception $e) {
+    // Handle database connection error
+    echo 'Database error: ' . $e->getMessage();
+    exit();
+}
+
 $conn->close();
 
 // Check if any payments are due
 $due_payments = array_filter($payments, function($payment) {
-    return $payment['status'] == 'pending' && $payment['due_date'] > date('Y-m-d');
+    return $payment['status'] == 'pending' && isset($payment['due_date']) && $payment['due_date'] > date('Y-m-d');
 });
 ?>
 
@@ -54,29 +67,23 @@ $due_payments = array_filter($payments, function($payment) {
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Amount</th>
                     <th>Payment Date</th>
-                    <th>Due Date</th>
                     <th>Status</th>
-                    <th>Property Location</th>
-                    <th>Property Type</th>
+                    <th>Type</th>
                 </tr>
             </thead>
             <tbody>
                 <?php if (count($payments) > 0): ?>
                     <?php foreach ($payments as $payment): ?>
                         <tr>
-                            <td><?php echo htmlspecialchars(number_format($payment['amount'], 2)); ?></td>
                             <td><?php echo htmlspecialchars(date('F j, Y', strtotime($payment['payment_date']))); ?></td>
-                            <td><?php echo htmlspecialchars(date('F j, Y', strtotime($payment['due_date']))); ?></td>
                             <td><?php echo htmlspecialchars(ucfirst($payment['status'])); ?></td>
-                            <td><?php echo htmlspecialchars($payment['location']); ?></td>
                             <td><?php echo htmlspecialchars(ucfirst($payment['type'])); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="6" class="text-center">No payments found</td>
+                        <td colspan="3" class="text-center">No payments found</td>
                     </tr>
                 <?php endif; ?>
             </tbody>

@@ -37,6 +37,7 @@ if ($stmt) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -47,6 +48,7 @@ if ($stmt) {
             padding: 20px;
             border: 1px solid #ddd;
             border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .profile-image {
             max-width: 150px;
@@ -55,32 +57,47 @@ if ($stmt) {
         .profile-info {
             margin-top: 20px;
         }
+        .sticky-footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: #f8f9fa;
+            padding: 10px;
+        }
+        @media (max-width: 576px) {
+            .profile-container {
+                padding: 10px;
+            }
+            .profile-info .btn {
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container profile-container">
         <header class="text-center">
-            <h1>Profile</h1>
+            <h1 class="mb-4">Profile</h1>
         </header>
 
         <div class="text-center">
-            <img src="../uploads/<?= htmlspecialchars($user['profile_pic']) ?>" alt="Profile Picture" class="profile-image">
+            <img src="../uploads/<?= htmlspecialchars($user['profile_pic']) ?>" alt="Profile Picture" class="profile-image img-fluid mb-3">
             <h3><?= htmlspecialchars($user['name']) ?></h3>
         </div>
 
         <div class="profile-info">
-            <a href="change_password.php" class="btn btn-warning btn-block">Change Password</a>
-            <a href="payroll.php" class="btn btn-primary btn-block">My Payroll</a>
-            <a href="messages.php" class="btn btn-secondary btn-block">Messages</a>
+            <a href="change_password.php" class="btn btn-warning btn-block mb-2">Change Password</a>
+            <a href="payroll.php" class="btn btn-primary btn-block mb-2">My Payroll</a>
+            <a href="messages.php" class="btn btn-secondary btn-block mb-2">Messages</a>
         </div>
     </div>
+
     <footer class="sticky-footer">
         <div class="container d-flex justify-content-end">
-            <a href="logout.php" class="btn btn-secondary">logout</a> <!-- Back button in the sticky footer -->
+            <a href="logout.php" class="btn btn-secondary">Logout</a>
         </div>
     </footer>
 
-    
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

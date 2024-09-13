@@ -78,37 +78,51 @@ if (!$result) {
     <style>
         .property-item {
             display: flex;
-            flex-direction: row; /* Image on the left */
+            flex-direction: column; /* Stack image on top of details */
             border: 1px solid #ddd;
             border-radius: 5px;
             padding: 15px;
             margin-bottom: 20px;
+            transition: box-shadow 0.3s ease;
+            background-color: #fff;
+            overflow: hidden;
+            max-width: 100%;
         }
+
+        .property-item:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
         .property-item img {
-            max-width: 300px; /* Limit the width of the image */
+            width: 100%;
+            height: 200px; /* Set a fixed height for all images */
             border-radius: 5px;
-            margin-right: 20px; /* Space between image and details */
+            object-fit: cover; /* Crop the image to fit the container */
+            cursor: pointer; /* Indicates that the image is clickable */
         }
+
         .property-details {
-            flex: 1; /* Allow details to take remaining space */
+            padding-top: 15px; /* Space between image and details */
         }
 
         /* Responsive adjustments */
-        @media (max-width: 768px) {
+        @media (min-width: 1200px) {
             .property-item {
-                flex-direction: column; /* Stack on small screens */
+                max-width: 300px; /* Limit width for larger screens */
             }
-            .property-item img {
-                margin-right: 0; /* Remove right margin when stacked */
-                margin-bottom: 10px; /* Add bottom margin instead */
-                max-width: 100%; /* Full width on small screens */
+        }
+
+        /* Additional adjustments for 1080p screens and wider */
+        @media (min-width: 1440px) {
+            .container {
+                max-width: 1200px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header class="my-4 d-flex justify-content-between">
+        <header class="my-4 d-flex justify-content-between align-items-center flex-wrap">
             <h1>Available Properties for Rent</h1>
             <a href="profile.php" class="btn btn-secondary">Profile</a>
         </header>
@@ -124,18 +138,24 @@ if (!$result) {
         </form>
 
         <?php if ($result && $result->num_rows > 0): ?>
-            <?php while ($row = $result->fetch_assoc()): ?>
-                <div class="property-item">
-                    <img src="../owner/<?= htmlspecialchars($row['file_path']) ?>" alt="<?= htmlspecialchars($row['description']) ?>" loading="lazy">
-                    <div class="property-details">
-                        <p><strong>Type:</strong> <?= htmlspecialchars($row['type']) ?></p>
-                        <p><strong>Price:</strong> $<?= number_format($row['price'], 2) ?></p>
-                        <p><strong>Location:</strong> <?= htmlspecialchars($row['location']) ?></p>
-                        <p><?= htmlspecialchars($row['description']) ?></p>
-                        <a href="property_details.php?id=<?= htmlspecialchars($row['id']) ?>" class="btn btn-info">View Details</a>
+            <div class="row">
+                <?php while ($row = $result->fetch_assoc()): ?>
+                    <div class="col-12 col-md-6 col-lg-4 mb-4">
+                        <div class="property-item">
+                            <!-- Make the image clickable -->
+                            <a href="property_details.php?id=<?= htmlspecialchars($row['id']) ?>">
+                                <img src="../owner/<?= htmlspecialchars($row['file_path']) ?>" alt="<?= htmlspecialchars($row['description']) ?>" loading="lazy">
+                            </a>
+                            <div class="property-details">
+                                <p><strong>Type:</strong> <?= htmlspecialchars($row['type']) ?></p>
+                                <p><strong>Price:</strong> $<?= number_format($row['price'], 2) ?></p>
+                                <p><strong>Location:</strong> <?= htmlspecialchars($row['location']) ?></p>
+                                <p><?= htmlspecialchars($row['description']) ?></p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            <?php endwhile; ?>
+                <?php endwhile; ?>
+            </div>
         <?php else: ?>
             <p>No properties available for rent at the moment.</p>
         <?php endif; ?>
@@ -154,5 +174,10 @@ if (!$result) {
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+
+
+
+
+
 
 <?php $conn->close(); ?>

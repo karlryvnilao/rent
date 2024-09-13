@@ -59,6 +59,7 @@ $rooms = [];
 
 if ($owner_id !== null) {
     // Fetch houses
+    // Fetch houses
     $stmt = $conn->prepare("SELECT * FROM properties WHERE owner_id = ? AND type = 'House'");
     $stmt->bind_param("i", $owner_id);
     $stmt->execute();
@@ -73,6 +74,7 @@ if ($owner_id !== null) {
     $result = $stmt->get_result();
     $rooms = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
+
 }
 
 $conn->close();
@@ -146,52 +148,54 @@ $conn->close();
 
     <!-- Property Container -->
     <div class="container">
-        <!-- House Column -->
-        <!-- House Column -->
-<div class="property-column" id="houses">
-    <h3>Houses</h3>
-    <?php if (count($houses) > 0): ?>
-        <?php foreach ($houses as $index => $house): ?>
-            <div class="property-item" id="house-<?php echo $index; ?>">
-                <div class="property-image">
-                    <img src="<?php echo $house['file_path']; ?>" alt="House Image">
+    <!-- House Column -->
+    <div class="property-column" id="houses">
+        <h3>Houses</h3>
+        <?php if (count($houses) > 0): ?>
+            <?php foreach ($houses as $index => $house): ?>
+                <div class="property-item" id="house-<?php echo $index; ?>">
+                    <div class="property-image">
+                        <img src="<?php echo $house['file_path']; ?>" alt="House Image">
+                    </div>
+                    <div class="property-details">
+                        <p>Type: <?php echo $house['type']; ?></p>
+                        <p>Description: <?php echo $house['description']; ?></p>
+                        <p>Location: <?php echo $house['location']; ?></p>
+                        <p>Price: <?php echo $house['price']; ?></p>
+                        <p>Status: <?php echo $house['available'] == 1 ? 'Available' : 'Occupied'; ?></p>
+                        <a href="property_details.php?id=<?php echo $house['id']; ?>" class="btn btn-link">View Details</a>
+                    </div>
                 </div>
-                <div class="property-details">
-                    <p>Type: <?php echo $house['type']; ?></p>
-                    <p>Description: <?php echo $house['description']; ?></p>
-                    <p>Location: <?php echo $house['location']; ?></p>
-                    <p>Price: <?php echo $house['price']; ?></p>
-                    <a href="property_details.php?id=<?php echo $house['id']; ?>" class="btn btn-link">View Details</a>
-                </div>
-            </div>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p>No houses available.</p>
-    <?php endif; ?>
-</div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>No houses available.</p>
+        <?php endif; ?>
+    </div>
 
-<!-- Room Column -->
-<div class="property-column" id="rooms">
-    <h3>Rooms</h3>
-    <?php if (count($rooms) > 0): ?>
-        <?php foreach ($rooms as $index => $room): ?>
-            <div class="property-item" id="room-<?php echo $index; ?>">
-                <div class="property-image">
-                    <img src="<?php echo $room['file_path']; ?>" alt="Room Image">
+    <!-- Room Column -->
+    <div class="property-column" id="rooms">
+        <h3>Rooms</h3>
+        <?php if (count($rooms) > 0): ?>
+            <?php foreach ($rooms as $index => $room): ?>
+                <div class="property-item" id="room-<?php echo $index; ?>">
+                    <div class="property-image">
+                        <img src="<?php echo $room['file_path']; ?>" alt="Room Image">
+                    </div>
+                    <div class="property-details">
+                        <p>Type: <?php echo $room['type']; ?></p>
+                        <p>Description: <?php echo $room['description']; ?></p>
+                        <p>Location: <?php echo $room['location']; ?></p>
+                        <p>Price: <?php echo $room['price']; ?></p>
+                        <p>Status: <?php echo $room['available'] == 1 ? 'Available' : 'Occupied'; ?></p>
+                        <a href="property_details.php?id=<?php echo $room['id']; ?>" class="btn btn-link">View Details</a>
+                    </div>
                 </div>
-                <div class="property-details">
-                    <p>Type: <?php echo $room['type']; ?></p>
-                    <p>Description: <?php echo $room['description']; ?></p>
-                    <p>Location: <?php echo $room['location']; ?></p>
-                    <p>Price: <?php echo $room['price']; ?></p>
-                    <a href="property_details.php?id=<?php echo $room['id']; ?>" class="btn btn-link">View Details</a>
-                </div>
-            </div>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p>No rooms available.</p>
-    <?php endif; ?>
-</div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>No rooms available.</p>
+        <?php endif; ?>
+    </div>
+
 
     </div>
 

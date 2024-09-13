@@ -45,15 +45,15 @@ if (isset($_POST['action']) && $_POST['action'] === 'rent') {
         
         if ($stmt->execute()) {
             // Redirect to tenant's dashboard or a success page
-            header("Location: property_listing.php?rent=success");
+            header("Location: index.php?rent=success");
             exit();
         } else {
-            echo "<div class='alert alert-danger'>Error: " . $stmt->error . "</div>";
+            echo "<div class='alert alert-danger'>Error: " . htmlspecialchars($stmt->error) . "</div>";
         }
 
         $stmt->close();
     } else {
-        echo "<div class='alert alert-danger'>Error preparing the SQL statement: " . $conn->error . "</div>";
+        echo "<div class='alert alert-danger'>Error preparing the SQL statement: " . htmlspecialchars($conn->error) . "</div>";
     }
 }
 ?>
@@ -69,15 +69,71 @@ if (isset($_POST['action']) && $_POST['action'] === 'rent') {
         .property-details {
             border: 1px solid #ddd;
             border-radius: 5px;
+            background-color: #fff;
             padding: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 70px; /* Space for sticky footer */
+            display: flex;
+            flex-direction: column;
+            position: relative;
         }
         .property-details img {
-            max-width: 100%;
+            width: 100%; /* Make image responsive */
+            height: auto; /* Maintain aspect ratio */
             border-radius: 5px;
+            margin-bottom: 15px;
         }
-        .btn-rent {
-            margin-top: 10px;
+        .details-container {
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+        }
+        .rent-now-button {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+        }
+
+        /* Sticky footer adjustments */
+        .sticky-footer {
+            position: -webkit-sticky; /* For Safari */
+            position: sticky;
+            bottom: 0;
+            background-color: #fff;
+            padding: 10px;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: none; /* Hidden by default, shown on mobile */
+        }
+
+        /* Responsive design adjustments */
+        @media (max-width: 767px) {
+            .rent-now-button {
+                display: none; /* Hide the button in the main content area on mobile */
+            }
+            .sticky-footer {
+                display: block;
+                position: fixed; /* Stick to the bottom of the viewport */
+                width: 100%;
+                bottom: 0;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 991px) {
+            .property-details {
+                padding: 20px;
+            }
+            .details-container {
+                padding: 10px;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .property-details {
+                padding: 30px;
+            }
+            .details-container {
+                padding: 20px;
+            }
         }
     </style>
 </head>
@@ -90,19 +146,25 @@ if (isset($_POST['action']) && $_POST['action'] === 'rent') {
 
         <div class="property-details">
             <img src="../owner/<?= htmlspecialchars($property['file_path']) ?>" alt="<?= htmlspecialchars($property['description']) ?>">
-            <div>
+            <div class="details-container">
                 <p><strong>Type:</strong> <?= htmlspecialchars($property['type']) ?></p>
                 <p><strong>Price:</strong> $<?= number_format($property['price'], 2) ?></p>
                 <p><strong>Location:</strong> <?= htmlspecialchars($property['location']) ?></p>
                 <p><?= htmlspecialchars($property['description']) ?></p>
-                
-                <!-- Rent Now Button -->
-                <form action="property_details.php?id=<?= htmlspecialchars($property['id']) ?>" method="POST">
-                    <input type="hidden" name="action" value="rent">
-                    <button type="submit" class="btn btn-primary btn-rent">Rent Now</button>
-                </form>
             </div>
+            <form action="property_details.php?id=<?= htmlspecialchars($property['id']) ?>" method="POST" class="rent-now-button">
+                <input type="hidden" name="action" value="rent">
+                <button type="submit" class="btn btn-primary">Rent Now</button>
+            </form>
         </div>
+    </div>
+  
+    <!-- Sticky Footer for Rent Button -->
+    <div class="sticky-footer">
+        <form action="property_details.php?id=<?= htmlspecialchars($property['id']) ?>" method="POST">
+            <input type="hidden" name="action" value="rent">
+            <button type="submit" class="btn btn-primary">Rent Now</button>
+        </form>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
