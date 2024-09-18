@@ -1,0 +1,188 @@
+style_bh.css
+
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+}
+
+/* Navbar Styles */
+nav {
+    background-color: #140C06;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 200px;
+    background-color: #f2f2f2;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+.sidebar-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+    background-color: #ddd;
+    border: none;
+    cursor: pointer;
+}
+
+.sidebar-btn:hover {
+    background-color: #bbb;
+}
+
+.owner-profile {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.owner-profile img {
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+}
+
+.space {
+    flex: 1;
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    background-color: #333;
+    color: #fff;
+    padding: 15px;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+}
+
+.navbar ul li {
+    margin-right: 15px;
+}
+
+.navbar ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #f4f4f4;
+    padding: 15px;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+.main-content {
+    margin-left: 260px; /* Adjust margin based on the sidebar width */
+    padding: 20px;
+}
+.main-content {
+    padding: 20px;
+}
+
+/* Flexbox layout for form */
+.bh-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.textbox input,
+.textbox textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.button input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Responsive Images */
+.bhimage-con img, .license-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+/* Flexbox for main form layout */
+.bh-form div {
+    display: flex;
+    gap: 20px;
+    flex-direction: row;
+}
+
+.bh-form div > div {
+    flex: 1;
+}
+
+/* Media Queries */
+@media screen and (max-width: 768px) {
+    .bh-form div {
+        flex-direction: column; /* Stack form fields on smaller screens */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .main-content {
+        padding: 10px;
+    }
+
+    .button input[type="submit"] {
+        width: 100%;
+    }
+
+    .map iframe {
+        width: 100%;
+        height: auto;
+    }
+
+    .bhimage-modal-content, .license-modal-content {
+        width: 90%; /* Make modal content width fit smaller screens */
+    }
+
+    .description p {
+        font-size: 14px; /* Adjust text size for readability */
+    }
+}
